@@ -7,6 +7,7 @@ import org.example.page.HomePage;
 import org.example.page.LoginForm;
 import org.example.page.PlaceOrderForm;
 import org.example.page.TopMenuForm;
+import org.testng.Assert;
 
 public class UiSteps {
 
@@ -20,6 +21,9 @@ public class UiSteps {
 
     public void login(String username, String password) {
         topMenuForm.clickLoginButton();
+
+        Assert.assertTrue(loginForm.isDisplayed());
+
         loginForm.inputUserName(username);
         loginForm.inputPassword(password);
         loginForm.clickLoginButton();
@@ -28,6 +32,8 @@ public class UiSteps {
 
     public void goToCatalogItemPage(int catalogItemNumber) {
         homePage.catalogItemClick(1);
+
+        Assert.assertTrue(catalogItemPage.isDisplayed());
     }
 
     public String addItemToCart() {
@@ -39,6 +45,8 @@ public class UiSteps {
 
     public void goToCart() {
         topMenuForm.clickCartButton();
+
+        Assert.assertTrue(cartPage.isDisplayed());
     }
 
     public String getItemPriceFromCart() {
@@ -47,6 +55,9 @@ public class UiSteps {
 
     public String placeOrder(String name,String country, String city, String card, String month, String year) {
         cartPage.placeOrderButtonClick();
+
+        Assert.assertTrue(placeOrderForm.isDisplayed());
+
         placeOrderForm.inputName(name);
         placeOrderForm.inputCountry(country);
         placeOrderForm.inputCity(city);

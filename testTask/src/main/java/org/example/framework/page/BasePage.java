@@ -22,6 +22,7 @@ public class BasePage {
     }
 
     public boolean isDisplayed() {
+       waitForVisibility();
        return new BaseElement(locator, name).findElement().isDisplayed();
     };
 
@@ -31,6 +32,10 @@ public class BasePage {
 
     protected void waitForClickable(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    protected void waitForVisibility() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
     }
 
     protected void waitForNotDisplayed(By locator) {
