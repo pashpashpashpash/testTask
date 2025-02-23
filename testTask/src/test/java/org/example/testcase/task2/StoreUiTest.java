@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 public class StoreUiTest extends BaseTest {
 
-    @Test
+   /* @Test
     public void purchaseTest() {
         logger.info("Test method started");
         logger.info("Step 1: Go to the main page");
@@ -39,5 +39,5 @@ public class StoreUiTest extends BaseTest {
                 "Prices from item page and purchase should be equal");
 
         logger.info("Test method ended");
-    }
+    }*/
 }

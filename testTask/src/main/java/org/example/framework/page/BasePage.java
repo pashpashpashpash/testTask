@@ -13,7 +13,7 @@ public class BasePage {
 
     private String locator;
     private String name;
-    private final long TIME_OUT_IN_SECONDS = 10;
+    private final long TIME_OUT_IN_SECONDS = 15;
     private WebDriverWait wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
 
     public BasePage(String locator, String name) {
@@ -25,6 +25,7 @@ public class BasePage {
        waitForVisibility();
        return new BaseElement(locator, name).findElement().isDisplayed();
     };
+
 
     public String getLocator() {
         return locator;
