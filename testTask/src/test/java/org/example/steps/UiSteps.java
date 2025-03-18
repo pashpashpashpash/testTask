@@ -1,71 +1,144 @@
 package org.example.steps;
 
-import org.example.page.CartPage;
-import org.example.page.CatalogItemPage;
-import org.example.page.ConfirmedPurchaseAlert;
-import org.example.page.HomePage;
-import org.example.page.LoginForm;
-import org.example.page.PlaceOrderForm;
-import org.example.page.TopMenuForm;
+import org.example.framework.driver.DriverManager;
+import org.example.page.*;
 import org.testng.Assert;
 
 public class UiSteps {
 
-    TopMenuForm topMenuForm = new TopMenuForm("TopMenuForm");
     LoginForm loginForm = new LoginForm("LoginForm");
-    HomePage homePage = new HomePage("HomePage");
-    CartPage cartPage = new CartPage("CartPage");
-    CatalogItemPage catalogItemPage = new CatalogItemPage("CatalogItemPage");
-    PlaceOrderForm placeOrderForm = new PlaceOrderForm("PlaceOrderForm");
-    ConfirmedPurchaseAlert confirmedPurchaseAlert = new ConfirmedPurchaseAlert("ConfirmedPurchaseAlert");
+    MonitoringPage monitoringPage = new MonitoringPage("monitoringPage");
+    SideMenuPanel sideMenuPanel = new SideMenuPanel("sideMenuPanel");
+    IssuesPage issuesPage = new IssuesPage("issuesPage");
+    CreateIssueForm createIssueForm = new CreateIssueForm("createIssueForm");
+    IssuePage issuePage = new IssuePage("IssuePage");
+    ProjectsPage projectsPage = new ProjectsPage("ProjectsPage");
+    ProjectPage projectPage = new ProjectPage("ProjectPage");
+    KnowledgeBasePage knowledgeBasePage = new KnowledgeBasePage("KnowledgePage");
+    ProjectTeamAddWidgetForm projectTeamAddWidgetForm = new ProjectTeamAddWidgetForm("projectTeamAddWidgetForm");
 
     public void login(String username, String password) {
-        topMenuForm.clickLoginButton();
-
-        Assert.assertTrue(loginForm.isDisplayed());
-
         loginForm.inputUserName(username);
         loginForm.inputPassword(password);
         loginForm.clickLoginButton();
-        loginForm.waitForLoginFormInactivate();
+
+        Assert.assertTrue(monitoringPage.isDisplayed());
     }
 
-    public void goToCatalogItemPage(int catalogItemNumber) {
-        homePage.catalogItemClick(1);
+    public void addIssue(String title) {
+        sideMenuPanel.clickIssuesButton();
+        Assert.assertTrue(issuesPage.isDisplayed());
 
-        Assert.assertTrue(catalogItemPage.isDisplayed());
+        issuesPage.clickCreateIssueButton();
+        Assert.assertTrue(createIssueForm.isDisplayed());
+
+        createIssueForm.inputTitle(title);
+        createIssueForm.clickSubmitButton();
+        createIssueForm.clickCloseButton();
+
+        Assert.assertTrue(issuesPage.isContainsIssue(title));
     }
 
-    public String addItemToCart() {
-        String itemPrice = catalogItemPage.getPriceValue();
-        catalogItemPage.clickAddToCartButton();
-        catalogItemPage.getAlert().accept();
-        return itemPrice;
+    public void deleteIssue(String title) {
+        sideMenuPanel.clickIssuesButton();
+        Assert.assertTrue(issuesPage.isDisplayed());
+
+        issuesPage.clickIssueItem(title);
+
+        Assert.assertTrue(issuePage.isDisplayed());
+
+        issuePage.clickMenuButton();
+        issuePage.clickDeleteButton();
+        issuePage.clickConfirmDeleteButton();
+
+        Assert.assertTrue(issuesPage.isDisplayed());
+
+        DriverManager.getInstance().navigate().refresh();
+
+        Assert.assertTrue(issuesPage.isDisplayed());
+        Assert.assertFalse(issuesPage.isContainsIssue(title));
     }
 
-    public void goToCart() {
-        topMenuForm.clickCartButton();
+    public void addComment(String taskTitle, String comment) {
+        sideMenuPanel.clickIssuesButton();
 
-        Assert.assertTrue(cartPage.isDisplayed());
+        Assert.assertTrue(issuesPage.isDisplayed());
+
+        issuesPage.clickIssueItem(taskTitle);
+
+        Assert.assertTrue(issuePage.isDisplayed());
+
+        issuePage.enterCommentText(comment);
+        issuePage.clickPostCommentButton();
+
+        Assert.assertTrue(issuePage.containsComment(comment));
     }
 
-    public String getItemPriceFromCart() {
-        return cartPage.getPrice();
+    public void addArticle(String title) {
+        sideMenuPanel.clickArticlesButton();
+
+        Assert.assertTrue(knowledgeBasePage.isDisplayed());
+
+        knowledgeBasePage.clickAddArticleButton();
+        knowledgeBasePage.enterArticleTitle(title);
+        knowledgeBasePage.clickPublishButton();
+        knowledgeBasePage.clickSelectProjectButton();
+
+        Assert.assertTrue(knowledgeBasePage.containsArticle(title));
     }
 
-    public String placeOrder(String name,String country, String city, String card, String month, String year) {
-        cartPage.placeOrderButtonClick();
+    public void deleteArticle(String title) {
+        sideMenuPanel.clickArticlesButton();
 
-        Assert.assertTrue(placeOrderForm.isDisplayed());
+        Assert.assertTrue(knowledgeBasePage.isDisplayed());
 
-        placeOrderForm.inputName(name);
-        placeOrderForm.inputCountry(country);
-        placeOrderForm.inputCity(city);
-        placeOrderForm.inputCreditCard(card);
-        placeOrderForm.inputMonth(month);
-        placeOrderForm.inputYear(year);
-        placeOrderForm.clickPurchaseButton();
-        return confirmedPurchaseAlert.getPriceValue();
+        knowledgeBasePage.clickDeleteButton(title);
+
+        Assert.assertFalse(knowledgeBasePage.containsArticle(title));
+    }
+
+    public void addWidget(String widgetName) {
+        sideMenuPanel.clickDashboardButton();
+
+        Assert.assertTrue(monitoringPage.isDisplayed());
+
+        int widgetCountBefore = monitoringPage.getWidgetCount();
+        monitoringPage.clickAddWidgetButton();
+        monitoringPage.selectWidgetItem(widgetName);
+        int widgetCountAfter = monitoringPage.getWidgetCount();
+
+        Assert.assertEquals(widgetCountAfter, widgetCountBefore + 1);
+
+    }
+
+    public void addProject(String projectName) {
+        sideMenuPanel.clickProjectsButton();
+
+        Assert.assertTrue(projectsPage.isDisplayed());
+
+        projectsPage.clickCreateProjectButton();
+        projectsPage.clickDefaultTemplateButton();
+        projectsPage.clickAcceptButton();
+        projectsPage.enterProjectName(projectName);
+        projectsPage.clickCreateButton();
+
+        Assert.assertTrue(projectPage.isDisplayed());
+
+        Assert.assertEquals(projectName, projectPage.getProjectName());
+
+    }
+
+    public void deleteProject(String projectName) {
+        sideMenuPanel.clickProjectsButton();
+
+        Assert.assertTrue(projectsPage.isDisplayed());
+
+        projectsPage.clickProjectMenuButton(projectName);
+        projectsPage.clickDeleteButton();
+        projectsPage.enterProjectNameToDelete(projectName);
+        projectsPage.clickConfirmDeleteButton();
+
+        Assert.assertFalse(projectsPage.isContainsProject(projectName));
     }
 
 }

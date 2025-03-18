@@ -13,7 +13,7 @@ import java.util.List;
 public class BaseElement {
 
     protected static final Logger logger = LogManager.getLogger();
-    private static final int RETRY_NUMBER = 200;
+    private static final int RETRY_NUMBER = 1500;
 
     private By locator;
     private String xPathLocator;
