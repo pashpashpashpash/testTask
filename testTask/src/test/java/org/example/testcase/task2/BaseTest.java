@@ -19,6 +19,7 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
         logger.info("before method execution");
+        browser.goToUrl(dataUtil.getTestProps().getProperty("mainPageUrl"));
     }
 
     @AfterMethod

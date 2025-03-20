@@ -13,8 +13,8 @@ public class BasePage {
 
     private String locator;
     private String name;
-    private final long TIME_OUT_IN_SECONDS = 15;
-    private WebDriverWait wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
+    private final long TIME_OUT_IN_SECONDS = 20;
+    private WebDriverWait wait;
 
     public BasePage(String locator, String name) {
         this.locator = locator;
@@ -32,18 +32,22 @@ public class BasePage {
     }
 
     protected void waitForClickable(By locator) {
+        wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
     protected void waitForVisibility() {
+        wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
     }
 
     protected void waitForNotDisplayed(By locator) {
+        wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
 
     public Alert getAlert() {
+        wait = new WebDriverWait(DriverManager.getInstance(), Duration.ofSeconds(TIME_OUT_IN_SECONDS));
         wait.until(ExpectedConditions.alertIsPresent());
         return DriverManager.getInstance().switchTo().alert();
     }

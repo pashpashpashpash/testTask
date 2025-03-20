@@ -1,13 +1,6 @@
 package org.example.steps;
 
-import org.example.page.AddInterviewModal;
-import org.example.page.CartPage;
-import org.example.page.CatalogItemPage;
-import org.example.page.ConfirmedPurchaseAlert;
-import org.example.page.InterviewsPage;
-import org.example.page.LoginForm;
-import org.example.page.PlaceOrderForm;
-import org.example.page.TopMenuForm;
+import org.example.page.*;
 import org.testng.Assert;
 
 public class UiSteps {
@@ -16,6 +9,11 @@ public class UiSteps {
     LoginForm loginForm = new LoginForm("LoginForm");
     InterviewsPage interviewsPage = new InterviewsPage("InterviewsPage");
     AddInterviewModal addInterviewModal = new AddInterviewModal("addInterviewModal");
+    AddQuestionModal addQuestionModal = new AddQuestionModal("addQuestionModal");
+    AddQuizModal addQuizModal = new AddQuizModal("addQuizModal");
+    QuestionsPage questionsPage = new QuestionsPage("QuestionsPage");
+    QuizPage quizPage = new QuizPage("QuizPAge");
+    ModulesPage modulesPage = new ModulesPage("ModulesPAge");
    // HomePage homePage = new HomePage("HomePage");
    // CartPage cartPage = new CartPage("CartPage");
    // CatalogItemPage catalogItemPage = new CatalogItemPage("CatalogItemPage");
@@ -40,10 +38,46 @@ public class UiSteps {
         Assert.assertTrue(interviewsPage.isDisplayed());
     }
 
+    public void goToQuestionsPage() {
+        topMenuForm.clickQuestionsButton();
+
+        Assert.assertTrue(questionsPage.isDisplayed());
+    }
+
+    public void goToQuizPage() {
+        topMenuForm.clickQuizButton();
+
+        Assert.assertTrue(quizPage.isDisplayed());
+    }
+
+    public void goToModulesPage() {
+        topMenuForm.clickModulesButton();
+
+     //   Assert.assertTrue(coursesPage.isDisplayed());
+    }
+
     public void clickAddInterviewButton() {
         interviewsPage.clickAddButton();
 
         Assert.assertTrue(addInterviewModal.isDisplayed());
+    }
+
+    public void clickAddQuestionButton() {
+        questionsPage.clickAddButton();
+
+        Assert.assertTrue(addQuestionModal.isDisplayed());
+    }
+
+    public void clickAddQuizButton() {
+        quizPage.clickAddButton();
+
+        Assert.assertTrue(addQuizModal.isDisplayed());
+    }
+
+    public void clickAddModuleButton() {
+        modulesPage.clickAddButton();
+
+        Assert.assertTrue(addModuleModal.isDisplayed());
     }
 
     public void createInterview(String interviewName) {
@@ -52,8 +86,32 @@ public class UiSteps {
       //  Assert.assertFalse(addInterviewModal.isDisplayed());
     }
 
+    public void createQuestion(String questionText) {
+        addQuestionModal.inputQuestion(questionText);
+        addQuestionModal.clickCreateButton();
+        //  Assert.assertFalse(addInterviewModal.isDisplayed());
+    }
+
+    public void createQuiz(String quizText) {
+        addQuizModal.inputQuiz(quizText);
+        addQuizModal.clickCreateButton();
+        //  Assert.assertFalse(addInterviewModal.isDisplayed());
+    }
+
     public void checkInterviewPresent(String name) {
         Assert.assertTrue(interviewsPage.isInterviewPresent(name));
+    }
+
+    public void checkQuestionPresent(String question) {
+        Assert.assertTrue(questionsPage.isQuestionPresent(question));
+    }
+
+    public String getQuestionId(String question) {
+        return questionsPage.getQuestionId(question);
+    }
+
+    public void checkQuizPresent(String quiz) {
+        Assert.assertTrue(quizPage.isQuizPresent(quiz));
     }
 
 
