@@ -15,31 +15,11 @@ public class RestUtil {
 
     private PropertiesUtil propertiesUtil = new PropertiesUtil();
 
-    private RequestSpecification getRequestSpecification() {
+    public RequestSpecification getRequestSpecification() {
         return new RequestSpecBuilder()
                 .setBaseUri(propertiesUtil.getTestProps().getProperty("baseUrl"))
+                .addHeader("Authorization", propertiesUtil.getTestProps().getProperty("apiToken"))
                 .log(LogDetail.ALL)
                 .build();
-    }
-
-    public Response getWithParams(String uri, Map<String, String> params) {
-        RequestSpecification requestSpecification = given(getRequestSpecification());
-        for (Map.Entry<String, String> param : params.entrySet()) {
-            requestSpecification.queryParam(param.getKey(), param.getValue());
-        }
-       return requestSpecification.get(uri);
-    }
-
-    public Response postWithParams(String uri, Map<String, String> params) {
-        RequestSpecification requestSpecification = given(getRequestSpecification())
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .body(params);
-        return requestSpecification.post(uri);
-    }
-
-    public Response delete(String uri) {
-        RequestSpecification requestSpecification = given(getRequestSpecification());
-        return requestSpecification.delete(uri);
     }
 }

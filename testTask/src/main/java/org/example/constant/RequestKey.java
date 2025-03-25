@@ -2,8 +2,9 @@ package org.example.constant;
 
 public class RequestKey {
 
-    public static final String EMAIL_KEY = "email";
-    public static final String PASSWORD_KEY = "password";
-    public static final String USERS_PER_PAGE_KEY = "per_page";
+    public static final String ID = "id";
+    public static final String TEXT = "text";
+    public static final String SUMMARY = "summary";
+    public static final String FIELDS = "fields";
 
 }
