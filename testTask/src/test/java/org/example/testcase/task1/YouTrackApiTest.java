@@ -19,7 +19,9 @@ public class YouTrackApiTest extends BaseTest {
     public void createIssueTest() {
         issueTitle = RandomStringUtils.random(10, true, true);
         Response response = apiSteps.createIssue(issueTitle, propertiesUtil.getTestProps().getProperty("projectId"));
+
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+
         JsonPath path = new JsonPath(response.body().asString());
         issueId = path.getString(ID);
         response = apiSteps.getIssue(issueId);
@@ -36,7 +38,9 @@ public class YouTrackApiTest extends BaseTest {
     public void commentIssueTest() {
         String commentText = RandomStringUtils.random(10, true, true);
         Response response = apiSteps.commentIssue(issueId, commentText);
+
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+
         response = apiSteps.getIssueComments(issueId);
 
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
@@ -67,6 +71,7 @@ public class YouTrackApiTest extends BaseTest {
     public void deleteIssueTest() {
         issueTitle = RandomStringUtils.random(10, true, true);
         Response response = apiSteps.deleteIssue(issueId);
+
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
 
         response = apiSteps.getIssue(issueId);
@@ -78,7 +83,9 @@ public class YouTrackApiTest extends BaseTest {
     public void createArticleTest() {
         String articleSummary = RandomStringUtils.random(10, true, true);
         Response response = apiSteps.createArticle(articleSummary, propertiesUtil.getTestProps().getProperty("projectId"));
+
         Assert.assertEquals(response.getStatusCode(), HttpStatus.SC_OK);
+
         JsonPath path = new JsonPath(response.body().asString());
         String articleId = path.getString(ID);
         response = apiSteps.getArticle(articleId);
